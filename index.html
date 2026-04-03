@@ -2,85 +2,79 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <title>serverdeipisselloni - Server PvP</title>
+    <title>Login</title>
     <style>
         body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+            font-family: Arial;
+            background: #0f172a;
             color: white;
-            text-align: center;
-        }
-
-        header {
-            padding: 40px;
-            font-size: 40px;
-            font-weight: bold;
-            background: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
 
         .box {
-            margin: 30px auto;
-            padding: 20px;
-            width: 80%;
-            max-width: 600px;
-            background: rgba(255,255,255,0.1);
+            background: #1e293b;
+            padding: 30px;
             border-radius: 15px;
+            width: 300px;
+            text-align: center;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 8px;
         }
 
         button {
-            padding: 15px 30px;
-            font-size: 18px;
+            width: 100%;
+            padding: 10px;
+            background: #3b82f6;
             border: none;
-            border-radius: 10px;
+            border-radius: 8px;
+            color: white;
             cursor: pointer;
-            background: #00ff99;
-            color: black;
-            font-weight: bold;
         }
 
         button:hover {
-            background: #00cc77;
-        }
-
-        footer {
-            margin-top: 40px;
-            padding: 20px;
-            background: rgba(0,0,0,0.5);
+            background: #2563eb;
         }
     </style>
 </head>
 <body>
 
-<header>
-    ⚔️  serverdeipisselloni - Server PvP ⚔️
-</header>
-
 <div class="box">
-    <h2>🔥 Entra nel nostro server!</h2>
-    <p>Modalità: Lobby • kitpvp • survival • PvP</p>
-    <p><strong>IP:</strong> serverdeipisselloni.aternos.me</p>
-    
-
-<div class="box">
-    <h2>📊 Stato Server</h2>
-       <p>Versione: 1.21.5</p>
-</div><input type="text" id="ip" value="serverdeipisselloni.aternos.me" readonly>
-<button onclick="copiaIP()">Copia IP</button>
+    <h2>Login</h2>
+    <form onsubmit="login(event)">
+        <input type="text" id="username" placeholder="Username" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button type="submit">Accedi</button>
+    </form>
+    <p id="msg"></p>
+</div>
 
 <script>
-function copiaIP() {
-  const input = document.getElementById("ip");
-  input.select();
-  input.setSelectionRange(0, 99999); 
-  navigator.clipboard.writeText(input.value);
-  alert("IP copiato!");
+function login(event) {
+    event.preventDefault();
+
+    let username = document.getElementById("username").value;
+    let password = document.getElementById("password").value;
+
+    let savedUser = localStorage.getItem("user");
+
+    if (username === savedUser) {
+        document.getElementById("msg").innerText = "Login riuscito!";
+        // Redirect (facoltativo)
+        // window.location.href = "dashboard.html";
+    } else {
+        document.getElementById("msg").innerText = "Utente non trovato!";
+    }
 }
 </script>
-
-<footer>
-    © 2026 serverdeipisselloni - Tutti i diritti riservati
-</footer>
 
 </body>
 </html>
