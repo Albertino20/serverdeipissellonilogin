@@ -1,78 +1,121 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <title>Login</title>
-    <style>
-        body {
-            font-family: Arial;
-            background: #0f172a;
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
+  <meta charset="UTF-8">
+  <title>Register + Login</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #0f172a;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
 
-        .box {
-            background: #1e293b;
-            padding: 30px;
-            border-radius: 15px;
-            width: 300px;
-            text-align: center;
-        }
+    .box {
+      background: #1e293b;
+      padding: 30px;
+      border-radius: 15px;
+      width: 300px;
+      text-align: center;
+    }
 
-        input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: none;
-            border-radius: 8px;
-        }
+    input {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: none;
+    }
 
-        button {
-            width: 100%;
-            padding: 10px;
-            background: #3b82f6;
-            border: none;
-            border-radius: 8px;
-            color: white;
-            cursor: pointer;
-        }
+    button {
+      padding: 10px 20px;
+      background: #22c55e;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+      margin-top: 10px;
+    }
 
-        button:hover {
-            background: #2563eb;
-        }
-    </style>
+    button:hover {
+      background: #16a34a;
+    }
+
+    .switch {
+      margin-top: 15px;
+      cursor: pointer;
+      color: #38bdf8;
+    }
+  </style>
 </head>
 <body>
 
 <div class="box">
-    <h2>Login</h2>
-    <form onsubmit="login(event)">
-        <input type="text" id="Email" placeholder="Email" required>
-        <input type="password" id="Password" placeholder="Password" required>
-        <button type="submit">Accedi</button>
-    </form>
-    <p id="msg"></p>
+  <h2 id="title">Registrazione</h2>
+  
+  <input type="text" id="username" placeholder="Username">
+  <input type="email" id="email" placeholder="Email">
+  <input type="password" id="password" placeholder="Password">
+  
+  <button id="mainBtn" onclick="register()">Registrati</button>
+  
+  <p id="msg"></p>
+
+  <p class="switch" onclick="toggleMode()">Hai già un account? Login</p>
 </div>
 
 <script>
-function login(event) {
-    event.preventDefault();
+let isLogin = false;
 
-    let username = document.getElementById("username").value;
-    let password = document.getElementById("password").value;
+function toggleMode() {
+  isLogin = !isLogin;
 
-    let savedUser = localStorage.getItem("user");
+  if (isLogin) {
+    document.getElementById("title").innerText = "Login";
+    document.getElementById("mainBtn").innerText = "Accedi";
+    document.querySelector(".switch").innerText = "Non hai un account? Registrati";
+    document.getElementById("username").style.display = "none";
+  } else {
+    document.getElementById("title").innerText = "Registrazione";
+    document.getElementById("mainBtn").innerText = "Registrati";
+    document.querySelector(".switch").innerText = "Hai già un account? Login";
+    document.getElementById("username").style.display = "block";
+  }
+}
 
-    if (username === savedUser) {
-        document.getElementById("msg").innerText = "Login riuscito!";
-        // Redirect (facoltativo)
-        // window.location.href = "dashboard.html";
-    } else {
-        document.getElementById("msg").innerText = "Utente non trovato!";
+function register() {
+  let username = document.getElementById("username").value;
+  let email = document.getElementById("email").value;
+  let password = document.getElementById("password").value;
+
+  if (email === "" || password === "" || (!isLogin && username === "")) {
+    document.getElementById("msg").innerText = "Compila tutti i campi!";
+    return;
+  }
+
+  if (!isLogin) {
+    // REGISTRAZIONE
+    let user = { username, email, password };
+    localStorage.setItem("user", JSON.stringify(user));
+    document.getElementById("msg").innerText = "Registrazione completata!";
+  } else {
+    // LOGIN
+    let savedUser = JSON.parse(localStorage.getItem("user"));
+
+    if (!savedUser) {
+      document.getElementById("msg").innerText = "Nessun account trovato!";
+      return;
     }
+
+    if (email === savedUser.email && password === savedUser.password) {
+      document.getElementById("msg").innerText = "Login riuscito! 🎉";
+    } else {
+      document.getElementById("msg").innerText = "Email o password sbagliati!";
+    }
+  }
 }
 </script>
 
